@@ -10,5 +10,11 @@ namespace Cinema
         public int UniqeMovieCount { get; set; }
         public int ScheduleDuration { get; set; }
 
+        public Schedule()
+        {
+            Movies = new List<Movie>();
+            UniqeMovieCount = 0;
+            ScheduleDuration = 0;
+        }
     }
 }

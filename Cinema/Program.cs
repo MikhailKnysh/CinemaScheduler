@@ -7,12 +7,12 @@ namespace Cinema
     {
         static void Main(string[] args)
         {
-            int numberOfFilms;
-            string movieTitle;
-            int movieDuration;
+            //int numberOfFilms;
+            //string movieTitle;
+            //int movieDuration;
 
-            Console.Write("Введите кол-во фильмов : ");
-            numberOfFilms = Convert.ToInt32(Console.ReadLine());
+            //Console.Write("Enter movies quantity:");
+            //numberOfFilms = Convert.ToInt32(Console.ReadLine());
 
             List<Movie> movies = new List<Movie>()
             {
@@ -20,17 +20,26 @@ namespace Cinema
                 new Movie(){Title="WWW", Duration=95}
             };
 
-            for (int i = 0; i < numberOfFilms; ++i)
+            Scheduler scheduler = Scheduler.GetScheduler(movies);
+
+            scheduler.GetStartBestSchedule();
+            scheduler.GetSchedule();
+
+            foreach (var movie in scheduler.BestSchedule.Movies)
             {
-                Console.Write("Введите фильм : ");
-                movieTitle = Console.ReadLine();
-                Console.Write("Введите длительность фильма в минутах : ");
-                movieDuration = Convert.ToInt32(Console.ReadLine());
-                Movie movie = new Movie() { Title = movieTitle, Duration = movieDuration };
-                movies.Add(movie);
+                Console.WriteLine($"({movie.Title} - {movie.Duration})");
             }
 
+            //for (int i = 0; i < numberOfFilms; ++i)
+            //{
+            //    Console.Write("Enter movie name: ");
+            //    movieTitle = Console.ReadLine();
 
+            //    Console.Write("Enter movie duration in minutes : ");
+            //    movieDuration = Convert.ToInt32(Console.ReadLine());
+            //    Movie movie = new Movie() { Title = movieTitle, Duration = movieDuration };
+            //    movies.Add(movie);
+            //}
         }
     }
 }

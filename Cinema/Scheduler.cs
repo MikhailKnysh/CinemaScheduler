@@ -7,16 +7,19 @@ namespace Cinema
     class Scheduler
     {
         private const int _durationCinema = 840;
+        
+        public Schedule BestSchedule { get; private set; }
 
-        private int _currentDurationCinema = 0;
+        private int _timeRest = 0;
         private List<Movie> _movies;
-        private Schedule _bestSchedule;
         private Schedule _currentSchedule;
 
         private Scheduler(List<Movie> movies)
         {
             _movies = new List<Movie>(movies);
-            _currentDurationCinema = _durationCinema;
+            _currentSchedule = new Schedule();
+            BestSchedule = new Schedule();
+            _timeRest = _durationCinema;
         }
 
         public static Scheduler GetScheduler(List<Movie> movies)
@@ -24,18 +27,18 @@ namespace Cinema
             return new Scheduler(movies);
         }
 
-        private void GetStartBestSchedule()
+        public void GetStartBestSchedule()
         {
             foreach (Movie movie in _movies)
             {
-                if (_currentDurationCinema > movie.Duration)
+                if (_timeRest > movie.Duration)
                 {
-                    _currentDurationCinema -= movie.Duration;
-                    _bestSchedule.ScheduleDuration += movie.Duration;
+                    _timeRest -= movie.Duration;
+                    BestSchedule.ScheduleDuration += movie.Duration;
 
-                    ++_bestSchedule.UniqeMovieCount;
+                    ++BestSchedule.UniqeMovieCount;
 
-                    _bestSchedule.Movies.Add(movie);
+                    BestSchedule.Movies.Add(movie);
                 }
                 else
                 {
@@ -44,13 +47,44 @@ namespace Cinema
             }
         }
 
+        public void GetSchedule()
+        {
+            if (_currentSchedule != null)
+            {
+                foreach (var movie in _movies)
+                {
+                    bool isAddedFilm = false;
+
+                    if (AddMovie(movie))
+                    {
+                        GetSchedule();
+                        isAddedFilm = true;
+                    }
+
+                    if (CheckBestSchedule())
+                    {
+                        BestSchedule = _currentSchedule;
+                    }
+
+                    if (isAddedFilm)
+                    {
+                        RemoveFilm(movie);
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException("Current schedule is null");
+            }
+        }
+
         private bool CheckBestSchedule()
         {
             bool isBest = false;
 
-            if (_currentSchedule.UniqeMovieCount > _bestSchedule.UniqeMovieCount 
-                && _currentSchedule.Movies.Count > _bestSchedule.Movies.Count
-                && _currentSchedule.ScheduleDuration < _bestSchedule.ScheduleDuration)
+            if (_currentSchedule.UniqeMovieCount > BestSchedule.UniqeMovieCount
+                && _currentSchedule.Movies.Count > BestSchedule.Movies.Count
+                && _currentSchedule.ScheduleDuration > BestSchedule.ScheduleDuration)
             {
                 isBest = true;
             }
@@ -58,9 +92,41 @@ namespace Cinema
             return isBest;
         }
 
-        public void GetSchedule()
+        private bool AddMovie(Movie movie)
         {
+            if (movie != null)
+            {
+                bool result = false;
 
+                if (_timeRest >= movie.Duration)
+                {
+                    _currentSchedule.ScheduleDuration += movie.Duration;
+                    _currentSchedule.Movies.Add(new Movie(movie));
+
+                    if (_currentSchedule.Movies.Contains(movie))
+                    {
+                        ++_currentSchedule.UniqeMovieCount;
+                    }
+
+                    result = true;
+                }
+
+                return result;
+            }
+
+            throw new ArgumentException("Movie is null");
+        }
+
+        private void RemoveFilm(Movie movie)
+        {
+            if (movie != null)
+            {
+                if (_movies != null)
+                {
+                    _currentSchedule.ScheduleDuration -= movie.Duration;
+                    _currentSchedule.Movies.Remove(movie);
+                }
+            }
         }
     }
 }
