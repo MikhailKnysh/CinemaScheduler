@@ -45,6 +45,8 @@ namespace Cinema
                     break;
                 }
             }
+
+            _timeRest = _durationCinema;
         }
 
         public void GetSchedule()
@@ -63,7 +65,7 @@ namespace Cinema
 
                     if (CheckBestSchedule())
                     {
-                        BestSchedule = _currentSchedule;
+                        BestSchedule = new Schedule(_currentSchedule);
                     }
 
                     if (isAddedFilm)
@@ -82,9 +84,9 @@ namespace Cinema
         {
             bool isBest = false;
 
-            if (_currentSchedule.UniqeMovieCount > BestSchedule.UniqeMovieCount
-                && _currentSchedule.Movies.Count > BestSchedule.Movies.Count
-                && _currentSchedule.ScheduleDuration > BestSchedule.ScheduleDuration)
+            if (_currentSchedule.UniqeMovieCount >= BestSchedule.UniqeMovieCount
+                && _currentSchedule.Movies.Count >= BestSchedule.Movies.Count
+                && _currentSchedule.ScheduleDuration >= BestSchedule.ScheduleDuration)
             {
                 isBest = true;
             }
@@ -98,15 +100,15 @@ namespace Cinema
             {
                 bool result = false;
 
-                if (_timeRest >= movie.Duration)
+                if (_currentSchedule.ScheduleDuration <= _durationCinema)
                 {
-                    _currentSchedule.ScheduleDuration += movie.Duration;
-                    _currentSchedule.Movies.Add(new Movie(movie));
-
-                    if (_currentSchedule.Movies.Contains(movie))
+                    if (!_currentSchedule.Movies.Contains(movie))
                     {
                         ++_currentSchedule.UniqeMovieCount;
                     }
+
+                    _currentSchedule.ScheduleDuration += movie.Duration;
+                    _currentSchedule.Movies.Add(new Movie(movie));
 
                     result = true;
                 }
@@ -125,6 +127,12 @@ namespace Cinema
                 {
                     _currentSchedule.ScheduleDuration -= movie.Duration;
                     _currentSchedule.Movies.Remove(movie);
+
+                    if (!_currentSchedule.Movies.Contains(movie))
+                    {
+                        --_currentSchedule.UniqeMovieCount;
+                    }
+
                 }
             }
         }

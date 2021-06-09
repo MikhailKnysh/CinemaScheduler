@@ -16,5 +16,12 @@ namespace Cinema
             UniqeMovieCount = 0;
             ScheduleDuration = 0;
         }
+
+        public Schedule(Schedule schedule)
+        {
+            Movies = schedule.Movies;
+            UniqeMovieCount = schedule.UniqeMovieCount;
+            ScheduleDuration = schedule.ScheduleDuration;
+        }
     }
 }
