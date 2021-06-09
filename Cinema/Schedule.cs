@@ -19,7 +19,7 @@ namespace Cinema
 
         public Schedule(Schedule schedule)
         {
-            Movies = schedule.Movies;
+            Movies = new List<Movie>(schedule.Movies);
             UniqeMovieCount = schedule.UniqeMovieCount;
             ScheduleDuration = schedule.ScheduleDuration;
         }

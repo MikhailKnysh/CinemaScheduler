@@ -7,7 +7,7 @@ namespace Cinema
     class Scheduler
     {
         private const int _durationCinema = 840;
-        
+
         public Schedule BestSchedule { get; private set; }
 
         private int _timeRest = 0;
@@ -24,7 +24,14 @@ namespace Cinema
 
         public static Scheduler GetScheduler(List<Movie> movies)
         {
-            return new Scheduler(movies);
+            if (movies != null)
+            {
+                return new Scheduler(movies);
+            }
+            else
+            {
+                throw new ArgumentException("List cannot be null!");
+            }
         }
 
         public void GetStartBestSchedule()
@@ -100,7 +107,7 @@ namespace Cinema
             {
                 bool result = false;
 
-                if (_currentSchedule.ScheduleDuration <= _durationCinema)
+                if (_durationCinema - _currentSchedule.ScheduleDuration >= movie.Duration)
                 {
                     if (!_currentSchedule.Movies.Contains(movie))
                     {
