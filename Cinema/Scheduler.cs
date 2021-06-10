@@ -62,12 +62,12 @@ namespace Cinema
             {
                 foreach (var movie in _movies)
                 {
-                    bool isAddedFilm = false;
+                    bool isAddedMovie = false;
 
                     if (AddMovie(movie))
                     {
                         GetSchedule();
-                        isAddedFilm = true;
+                        isAddedMovie = true;
                     }
 
                     if (CheckBestSchedule())
@@ -75,7 +75,7 @@ namespace Cinema
                         BestSchedule = new Schedule(_currentSchedule);
                     }
 
-                    if (isAddedFilm)
+                    if (isAddedMovie)
                     {
                         RemoveFilm(movie);
                     }
