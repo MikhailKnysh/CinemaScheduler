@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cinema
 {
-    class Schedule
+    public class Schedule
     {
         public List<Movie> Movies { get; set; }
         public int UniqeMovieCount { get; set; }
@@ -22,6 +22,14 @@ namespace Cinema
             Movies = new List<Movie>(schedule.Movies);
             UniqeMovieCount = schedule.UniqeMovieCount;
             ScheduleDuration = schedule.ScheduleDuration;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Schedule schedule &&
+                   EqualityComparer<List<Movie>>.Default.Equals(Movies, schedule.Movies) &&
+                   UniqeMovieCount == schedule.UniqeMovieCount &&
+                   ScheduleDuration == schedule.ScheduleDuration;
         }
     }
 }

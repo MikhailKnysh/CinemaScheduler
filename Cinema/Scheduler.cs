@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Cinema
 {
-    class Scheduler
+    public class Scheduler
     {
         private const int _durationCinema = 840;
 
         public Schedule BestSchedule { get; private set; }
 
         private int _timeRest = 0;
-        private List<Movie> _movies;
+        public List<Movie> _movies;
         private Schedule _currentSchedule;
 
         private Scheduler(List<Movie> movies)

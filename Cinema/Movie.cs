@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cinema
 {
-    class Movie
+    public class Movie
     {
         public string Title { get; set; }
         public int Duration { get; set; }

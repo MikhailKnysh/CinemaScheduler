@@ -17,7 +17,11 @@ namespace Cinema
             List<Movie> movies = new List<Movie>()
             {
                 new Movie(){Title="QQQ", Duration=120},
-                new Movie(){Title="WWW", Duration=95}
+                new Movie(){Title="WWW", Duration=95},
+                new Movie(){Title="PPP", Duration=95},
+                new Movie(){Title="AAA", Duration=135},
+                new Movie(){Title="DDD", Duration=180},
+                new Movie(){Title="LLL", Duration=1900}
             };
 
             Scheduler scheduler = Scheduler.GetScheduler(movies);
